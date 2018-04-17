@@ -2,9 +2,28 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, TextInput, Button, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { TextInputMask } from 'react-native-masked-text';
+import { Kaede, Isao, Hoshi } from 'react-native-textinput-effects';
 
 import Cliente from '../../models/Cliente';
-import { modifyEmail, modifyLogin, modifyNome, modifySenha, saveCliente, getAllCientes, setClienteToUpdate, updateCliente } from '../redux/actions/clienteActions';
+import { 
+    modifyEmail, 
+    modifyLogin, 
+    modifyNome, 
+    modifySenha, 
+    modifyTelefone,
+    modifyCidade,
+    modifyUf,
+    modifyCep,
+    modifyLogradouro,
+    modifyNumero,
+    modifyBairro,
+    modifyCpf,
+    saveCliente, 
+    getAllCientes, 
+    setClienteToUpdate, 
+    updateCliente 
+} from '../redux/actions/clienteActions';
 
 class ClienteUpdate extends Component {
     constructor(props) {
@@ -92,16 +111,22 @@ class ClienteUpdate extends Component {
                     value={this.props.email}
                     placeholder="Email"
                     onChangeText={(text) => this.setEmail(text)}
+                    keyboardType='email-address'
                 />
                 <TextInput
                     value={this.props.login}
                     placeholder="Login"
                     onChangeText={(text) => this.setLogin(text)}
                 />
-                <TextInput
+                <TextInputMask
                     value={this.props.telefone}
                     placeholder="Telefone"
                     onChangeText={(text) => this.setTelefone(text)}
+                    type={'cel-phone'}
+                    options={{
+                        format: '(99) 99999-9999'
+                    }}
+                    keyboardType='phone-pad'
                 />
                 <TextInput
                     value={this.props.cidade}
@@ -112,31 +137,43 @@ class ClienteUpdate extends Component {
                     value={this.props.uf}
                     placeholder="UF"
                     onChangeText={(text) => this.setUf(text)}
+                    maxLength={2}
                 />
-                <TextInput
+                <TextInputMask
                     value={this.props.cep}
                     placeholder="CEP"
                     onChangeText={(text) => this.setCep(text)}
+                    type={'zip-code'}
+                    options={{
+                        format: '99999-999'
+                    }}
+                    keyboardType='numeric'
                 />
                 <TextInput
                     value={this.props.logradouro}
                     placeholder="Logradouro"
                     onChangeText={(text) => this.setLogradouro(text)}
                 />
-                <TextInput
+                <TextInputMask
                     value={this.props.numero}
                     placeholder="Número"
                     onChangeText={(text) => this.setNumero(text)}
+                    type={'only-numbers'}
+                    keyboardType='numeric'
                 />
                 <TextInput
                     value={this.props.bairro}
                     placeholder="Bairro"
                     onChangeText={(text) => this.setBairro(text)}
                 />
-                <TextInput
+                <TextInputMask
                     value={this.props.cpf}
                     placeholder="CPF"
                     onChangeText={(text) => this.setCpf(text)}
+                    type={'cpf'}
+                    options={{
+                        format: '999.999.999-99'
+                    }}
                 />
 
                 <Button 
@@ -178,6 +215,14 @@ function mapDispatchToProps(dispatch) {
         modifyEmail,
         modifyLogin,
         modifySenha,
+        modifyTelefone,
+        modifyCidade,
+        modifyUf,
+        modifyCep,
+        modifyLogradouro,
+        modifyNumero,
+        modifyBairro,
+        modifyCpf,
         getAllCientes,
         updateCliente,
         setClienteToUpdate,

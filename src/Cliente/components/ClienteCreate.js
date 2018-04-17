@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, TextInput, Button, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { TextInputMask } from 'react-native-masked-text';
+import { Kaede, Isao, Hoshi } from 'react-native-textinput-effects';
 
 import styles from '../../appStyle';
 import { validateEmail } from '../../../utils/validate';

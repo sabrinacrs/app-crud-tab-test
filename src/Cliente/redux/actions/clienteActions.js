@@ -65,7 +65,7 @@ export function modifyCidade(cidade) {
     }
 }
 
-export function modifyUF(uf) {
+export function modifyUf(uf) {
     return {
         type: 'MODIFY_UF',
         payload: uf,
