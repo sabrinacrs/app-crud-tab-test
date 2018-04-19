@@ -31,3 +31,14 @@ export function dropTableClientes() {
 export function clear() {
     return {type: 'CLEAR'}
 }
+
+// set fields
+export function modifyField(field, value) {
+    return {
+        type: 'MODIFY_FIELD',
+        payload: {
+            field,
+            value
+        }
+    }
+}

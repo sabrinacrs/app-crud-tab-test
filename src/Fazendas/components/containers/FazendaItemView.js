@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, } from 'react-native';
-import styles from '../../appStyle';
+import styles from '../../../appStyle';
 
 class FazendaItemView extends Component {
     constructor(props) {

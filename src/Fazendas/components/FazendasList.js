@@ -7,7 +7,7 @@ import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 import { getAllFazendas, clear, setFazendas } from '../redux/actions/fazendaActions';
-import FazendaItemView from '../containers/FazendaItemView';
+import FazendaItemView from './containers/FazendaItemView';
 
 class FazendasList extends Component {
     constructor(props) {
@@ -37,6 +37,7 @@ class FazendasList extends Component {
     refreshList () {
         // initial state
         this.props.clear();
+        this.setState({text: ''});
     }
 
     render() {
@@ -62,10 +63,10 @@ class FazendasList extends Component {
                 </ScrollView>
 
                 <View>
-                    <TouchableHighlight style={styles.btnAdd} onPress={() => navigate('ClienteCreate', {}, {
+                    <TouchableHighlight style={styles.btnAdd} onPress={() => navigate('Fazenda', {}, {
                         type: 'Navigate',
-                        routeName: 'ClienteCreate',
-                        params: {cliente: {}}
+                        routeName: 'Fazenda',
+                        params: {fazenda: {}}
                     })}>
                         <Text style={styles.textBtnAdd}>+</Text>
                     </TouchableHighlight>
