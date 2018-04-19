@@ -59,7 +59,7 @@ class TesteScreen extends Component {
                     onPress={() => this.props.navigation.navigate('ClienteCreateStack', {}, {
                         type: 'Navigate',
                         routeName: 'ClienteCreate',
-                        params: { cliente: {}}
+                        params: {cliente: {}}
                     })} 
                 />
                 

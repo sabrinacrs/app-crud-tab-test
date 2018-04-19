@@ -57,4 +57,15 @@ export default StyleSheet.create({
     // Lists
 
     // CheckBox
+
+    // Item View
+    boxItemView: {
+        backgroundColor: '#fff',
+        height: 70,
+        paddingLeft: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 0.5,
+        borderColor: '#828282'
+    }
 });

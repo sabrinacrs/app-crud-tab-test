@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import styles from "./appStyle";
 import store from './config/redux/store';
 import ClienteCreate from './Cliente/components/ClienteCreate';
-import Routes from './config/routes/AppNavigator';
+import Routes from './config/routes';
 
 export default class App extends Component {
   render() {
