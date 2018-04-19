@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { TextInputMask } from 'react-native-masked-text';
 import { Hoshi } from 'react-native-textinput-effects';
 
-import { modifyField } from '../../redux/actions/fazendaActions';
+import { modifyField, clear } from '../../redux/actions/fazendaActions';
 
 class FormView extends Component {
     constructor(props) {
@@ -24,7 +24,7 @@ class FormView extends Component {
                         <View style={styles.groupInput}>
                             <Hoshi
                                 value={this.props.nome}
-                                onChangeText={(text) => this.setNome(text)}
+                                onChangeText={(text) => this.setField('nome', text)}
                                 label={'Nome'}
                                 borderColor={(this.props.nomeIsValid) ? '#00798c' : '#db1c1c'}
                                 labelStyle={{ fontFamily: 'Roboto-Regular' }}
@@ -39,7 +39,7 @@ class FormView extends Component {
                         <View style={styles.groupInput}>
                             <TextInputMask 
                                 value={this.props.hectares}
-                                onChangeText={(text) => this.modifyField('hectares', text)}
+                                onChangeText={(text) => this.setField('hectares', text)}
                                 type={'money'}
                                 options={{
                                     format: '0,00'
@@ -58,7 +58,7 @@ class FormView extends Component {
                          <View style={styles.groupInput}>
                             <Hoshi 
                                 value={this.props.email}
-                                onChangeText={(text) => this.setEmail(text)}
+                                onChangeText={(text) => this.setField('email', text)}
                                 label={'E-mail'}
                                 // borderColor={(this.props.emailIsValid) ? '#00798c' : '#db1c1c'}
                                 labelStyle={{ fontFamily: 'Roboto-Regular' }}
@@ -74,7 +74,7 @@ class FormView extends Component {
                         <View style={styles.groupInput}>
                             <TextInputMask 
                                 value={this.props.telefone}
-                                onChangeText={(text) => this.setTelefone(text)}
+                                onChangeText={(text) => this.setField('telefone', text)}
                                 type={'cel-phone'}
                                 options={{
                                     format: '(99) 99999-9999'
@@ -83,7 +83,7 @@ class FormView extends Component {
                                 customTextInputProps={{
                                     label: 'Telefone',
                                     borderColor: '#00798c',
-                                    labelStyle: { fontFamily: 'CircularStd-Book' },
+                                    labelStyle: { fontFamily: 'Roboto-Regular' },
                                     inputStyle: styles.textInputs,
                                 }}
                                 keyboardType='phone-pad'
@@ -97,77 +97,12 @@ class FormView extends Component {
                         
                         <View style={styles.groupInput}>
                             <Hoshi 
-                                value={this.props.cpfCnpj}
-                                onChangeText={(text) => this.setCpfCnpj(text)}
-                                label={'CPF/CNPJ'}
-                                borderColor={'#00798c'}
-                                labelStyle={{ fontFamily: 'CircularStd-Book' }}
-                                inputStyle={styles.textInputs}
-                                keyboardType='numeric'
-                                maxLength={20}
-                            />
-                            {
-                                (this.props.cpfCnpjIsValid) ? null: 
-                                <Text style={estilos.labelDanger}>* Dados inválidos</Text>
-                            }
-                        </View>
-
-                        <View style={styles.groupInputRow}>
-                            <View style={[styles.groupInput, {width: '75%'}]}>
-                                <Hoshi 
-                                    value={this.props.endereco}
-                                    onChangeText={(text) => this.setEndereco(text)}
-                                    label={'Endereço'}
-                                    borderColor={'#00798c'}
-                                    labelStyle={{ fontFamily: 'CircularStd-Book' }}
-                                    inputStyle={styles.textInputs}
-                                />
-                            </View>
-
-                            <View style={[styles.groupInput, {width: '20%'}]}>
-                                <TextInputMask
-                                    value={this.props.numero}
-                                    onChangeText={(text) => this.setNumero(text)}
-                                    type={'only-numbers'}
-                                    customTextInput={Hoshi}
-                                    customTextInputProps={{
-                                        label: 'Nº',
-                                        borderColor: '#00798c',
-                                        labelStyle: { fontFamily: 'CircularStd-Book' },
-                                        inputStyle: styles.textInputs,
-                                    }}
-                                    keyboardType='numeric'
-                                />
-                            </View>
-                        </View>
-                        
-                        <View style={styles.groupInput}>
-                            <Hoshi 
                                 value={this.props.bairro}
-                                onChangeText={(text) => this.setBairro(text)}
+                                onChangeText={(text) => this.setField('bairro', text)}
                                 label={'Bairro'}
                                 borderColor={'#00798c'}
-                                labelStyle={{ fontFamily: 'CircularStd-Book' }}
+                                labelStyle={{ fontFamily: 'Roboto-Regular' }}
                                 inputStyle={styles.textInputs}
-                            />
-                        </View>
-                        
-                        <View style={styles.groupInput}>
-                            <TextInputMask
-                                value={this.props.cep}
-                                onChangeText={(text) => this.setCep(text)}
-                                type={'zip-code'}
-                                options={{
-                                    format: '99999-999'
-                                }}
-                                customTextInput={Hoshi}
-                                customTextInputProps={{
-                                    label: 'CEP',
-                                    borderColor: '#00798c',
-                                    labelStyle: { fontFamily: 'CircularStd-Book' },
-                                    inputStyle: styles.textInputs,
-                                }}
-                                keyboardType='numeric'
                             />
                         </View>
                         
@@ -175,10 +110,10 @@ class FormView extends Component {
                             <View style={[ styles.groupInput, {width: '75%'} ]}>
                                 <Hoshi 
                                     value={this.props.cidade}
-                                    onChangeText={(text) => this.setCidade(text)}
+                                    onChangeText={(text) => this.setField('cidade', text)}
                                     label={'Cidade'}
                                     borderColor={'#00798c'}
-                                    labelStyle={{ fontFamily: 'CircularStd-Book' }}
+                                    labelStyle={{ fontFamily: 'Roboto-Regular' }}
                                     inputStyle={styles.textInputs}
                                 />
                             </View>
@@ -186,10 +121,10 @@ class FormView extends Component {
                             <View style={[ styles.groupInput, {width: '20%'} ]}>
                                 <Hoshi 
                                     value={this.props.uf}
-                                    onChangeText={(text) => this.setUf(text)}
+                                    onChangeText={(text) => this.setField('uf', text)}
                                     label={'UF'}
                                     borderColor={'#00798c'}
-                                    labelStyle={{ fontFamily: 'CircularStd-Book' }}
+                                    labelStyle={{ fontFamily: 'Roboto-Regular' }}
                                     inputStyle={styles.textInputs}
                                     maxLength={2}
                                 />
@@ -201,7 +136,8 @@ class FormView extends Component {
                     <Button 
                         title={(isUpdate) ? 'Atualizar' : 'Cadastrar'}
                         color="#219653" 
-                        onPress={() => { (isUpdate) ? this.updateCliente() : this.saveNewCliente() }}
+                        onPress={() => false}
+                        // onPress={() => { (isUpdate) ? this.updateCliente() : this.saveNewCliente() }}
                     />
                 </View>
             </View>
@@ -212,6 +148,7 @@ class FormView extends Component {
 function mapStateToProps(state) {
     return {
         nome: state.fazendaReducers.nome,
+        email: state.fazendaReducers.email,
         hectares: state.fazendaReducers.hectares,
         cidade: state.fazendaReducers.cidade,
         uf: state.fazendaReducers.uf,
@@ -220,13 +157,20 @@ function mapStateToProps(state) {
         enderecoWeb: state.fazendaReducers.enderecoWeb,
         telefone: state.fazendaReducers.telefone,
         cliente: state.fazendaReducers.cliente,
+        
+        nomeIsValid: state.fazendaReducers.nomeIsValid,
+        emailIsValid: state.fazendaReducers.emailIsValid,
+        hectaresIsValid: state.fazendaReducers.hetaresIsValid,
+        ufIsValid: state.fazendaReducers.ufIsValid,
+        telefoneIsValid: state.fazendaReducers.telefoneIsValid,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        clear,
         modifyField
     }
 }
 
-export default connect()(FormView);
+export default connect(mapStateToProps, mapDispatchToProps)(FormView);

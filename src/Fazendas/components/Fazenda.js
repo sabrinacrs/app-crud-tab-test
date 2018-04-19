@@ -50,10 +50,9 @@ class Fazenda extends Component {
 
     render () {
         return (
-            <ScrollView>
-                <View>
-                </View>
-            </ScrollView>
+            <View>
+                <FormView />
+            </View>
         );
     }
 }
