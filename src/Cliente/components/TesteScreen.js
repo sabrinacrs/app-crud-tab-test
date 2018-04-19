@@ -37,9 +37,9 @@ class TesteScreen extends Component {
                 <Button 
                     title='Update'
                     // onPress={() => this.metAlert()}
-                    onPress={() => this.props.navigation.navigate('ClienteUpdateStack', {}, {
+                    onPress={() => this.props.navigation.navigate('ClienteCreateStack', {}, {
                         type: 'Navigate',
-                        routeName: 'ClienteUpdate',
+                        routeName: 'ClienteCreate',
                         params: { cliente: this.state.cliente}
                     })} 
                 />
@@ -56,7 +56,11 @@ class TesteScreen extends Component {
 
                 <Button 
                     title="Novo cliente"
-                    onPress={() => this.props.navigation.navigate('ClienteCreateStack')}
+                    onPress={() => this.props.navigation.navigate('ClienteCreateStack', {}, {
+                        type: 'Navigate',
+                        routeName: 'ClienteCreate',
+                        params: { cliente: {}}
+                    })} 
                 />
                 
             </View>

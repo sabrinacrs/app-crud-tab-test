@@ -5,11 +5,9 @@ import { bindActionCreators } from 'redux';
 import { TextInputMask } from 'react-native-masked-text';
 import { Kaede, Isao, Hoshi } from 'react-native-textinput-effects';
 
-import styles from '../../appStyle';
-import { validateEmail } from '../../../utils/validate';
-import Cliente from '../../models/Cliente';
-import FormView from './containers/FormView';
-
+import styles from '../../../appStyle';
+import { validateEmail } from '../../../../utils/validate';
+import Cliente from '../../../models/Cliente';
 import { 
     clear,
     modifyEmail, 
@@ -19,12 +17,13 @@ import {
     modifyConfirmaSenha,
     saveCliente, 
     getAllCientes,
-    setClienteToUpdate,
-} from '../redux/actions/clienteActions';
+} from '../../redux/actions/clienteActions';
 
-class ClienteCreate extends Component {
+class FormView extends Component {
     constructor(props) {
         super(props);
+
+        this.setCliente();
     }
 
     setNome(nome) {
@@ -97,15 +96,26 @@ class ClienteCreate extends Component {
 
     getClientes() {
         getAllCientes();
+
+        console.log(this.props.clientes);
+    }
+
+    setCliente() {
+        // função para quando o formuário for usado para update
+        if(this.props.cliente.nome != undefined) {
+            const { nome, email, login, senha } = this.props.cliente;
+
+            this.props.modifyNome(nome);
+            this.props.modifyEmail(email);
+            this.props.modifyLogin(login);
+            this.props.modifyConfirmaSenha(senha);
+        }
     }
 
     render() {
-        const cliente = this.props.navigation.state.params.cliente;
-
         return (
             <ScrollView>
-                <FormView cliente={cliente} />
-                {/* <View>
+                <View>
                     <TextInput
                         value={this.props.nome}
                         placeholder="Nome"
@@ -167,7 +177,7 @@ class ClienteCreate extends Component {
                         title="Find All"
                         onPress={() => this.getClientes()}
                     />
-                </View> */}
+                </View>
             </ScrollView>
             
         );
@@ -202,8 +212,7 @@ function mapDispatchToProps(dispatch) {
         modifyConfirmaSenha,
         saveCliente,
         getAllCientes,
-        setClienteToUpdate,
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClienteCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(FormView);
