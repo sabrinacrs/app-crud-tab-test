@@ -1,4 +1,4 @@
-import { findAll, deleteAll } from '../../controllers/FazendaController';
+import { save, findAll, deleteAll } from '../../controllers/FazendaController';
 
 export function getAllFazendas() {
     return {
