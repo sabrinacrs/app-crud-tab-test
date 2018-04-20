@@ -7,16 +7,20 @@ import { Hoshi } from 'react-native-textinput-effects';
 
 import styles from '../../../appStyle';
 import Fazenda from '../../../models/Fazenda';
-import { modifyField, clear } from '../../redux/actions/fazendaActions';
+import { validateEmail } from '../../../../utils/validate';
+import { 
+    modifyField, 
+    clear, 
+    saveFazenda, 
+    updateFazenda,
+    setFazenda,
+    setUpdate,
+} from '../../redux/actions/fazendaActions';
 
 class FazendaFormView extends Component {
     constructor(props) {
         super(props);
 
-        // incializa isUpdate com false - se for true, será alterado em this.setFazenda
-        this.state = { isUpdate: false };
-
-        // carrega campos para update
         this.setFazenda();
     }
 
@@ -26,6 +30,7 @@ class FazendaFormView extends Component {
         // valida nome
         if(this.props.nome.length < 3) {
             this.props.modifyField('nome', this.props.nome);
+            flag = false;
         }
 
         // valida hectares
@@ -33,22 +38,28 @@ class FazendaFormView extends Component {
         // valida email
         if(this.props.email != "" && !validateEmail(this.props.email)) {
             this.props.modifyField('email', this.props.email);
+            flag = false;
         }
 
         // valida cidade
         if(this.props.cidade != "" && this.props.cidade.length < 3) {
             this.props.modifyField('cidade', this.props.cidade);
+            flag = false;
         }
 
         // valida uf
         if(this.props.uf != "" && this.props.uf.length < 2) {
             this.props.modifyField('uf', this.props.uf);
+            flag = false;
         }
 
         // valida telefone
         if(this.props.telefone != "" && this.props.telefone.length < 14) {
             this.props.modifyField('telefone', this.props.telefone);
+            flag = false;
         }
+
+        return flag;
     }
 
     setFazenda() {
@@ -65,7 +76,7 @@ class FazendaFormView extends Component {
             this.props.modifyField('cidade', cidade);
             this.props.modifyField('uf', uf);
 
-            this.setState({isUpdate: true});
+            this.props.setUpdate(true);
         }
     }
 
@@ -79,6 +90,7 @@ class FazendaFormView extends Component {
         const clienteId = 1; // o cliente não muda
         const hectaresFloat = (hectares == "") ? 0 : parseFloat(hectares);
         const fazenda = new Fazenda(nome, hectaresFloat, telefone, email, enderecoWeb, cidade, uf, bairro, clienteId );
+        fazenda.id = this.props.fazenda.id;
 
         if(this.formValidate()) {
             this.props.updateFazenda(fazenda);
@@ -90,18 +102,20 @@ class FazendaFormView extends Component {
         const { nome, hectares, telefone, email, enderecoWeb, bairro, cidade, uf} = this.props;
         const clienteId = 1; // pega id do cliente da sessão, que vem por props ou sei lá
         // parse hectares
-        const hectaresFloat = (hectares == "") ? 0 : parseFloat(hectares.replace("R$", ""));
+        const hectaresFloat = (hectares == "") ? 0 : parseFloat(hectares.replace("R$", "").replace(".", "").replace(",", "."));
 
         // nova fazenda
         const newFazenda = new Fazenda(nome, hectaresFloat, telefone, email, enderecoWeb, cidade, uf, bairro, clienteId);
 
-        if(formValidate()) {
+        if(this.formValidate()) {
             this.props.saveFazenda(newFazenda);
 
             // clear fields 
             this.props.clear();
         }
-        alert('NEW FAZENDA');
+        
+        alert('Fazenda ' + newFazenda.nome + " criada!");
+        this.props.navigation.navigate('FazendasList');
     }
 
     render() {
@@ -172,7 +186,7 @@ class FazendaFormView extends Component {
                                 value={this.props.email}
                                 onChangeText={(text) => this.setField('email', text)}
                                 label={'E-mail'}
-                                // borderColor={(this.props.emailIsValid) ? '#00798c' : '#db1c1c'}
+                                borderColor={(this.props.emailIsValid) ? '#00798c' : '#db1c1c'}
                                 labelStyle={{ fontFamily: 'Roboto-Regular' }}
                                 inputStyle={styles.textInputs}
                                 keyboardType='email-address'
@@ -233,9 +247,9 @@ class FazendaFormView extends Component {
                 </ScrollView>
                 <View style={styles.footer}>
                     <Button 
-                        title={(this.state.isUpdate) ? 'Atualizar' : 'Cadastrar'}
+                        title={(this.props.isUpdate) ? 'Atualizar' : 'Cadastrar'}
                         color="#219653" 
-                        onPress={() => { (this.state.isUpdate) ? this.updateFazenda() : this.saveNewFazenda() }}
+                        onPress={() => { (this.props.isUpdate) ? this.updateFazenda() : this.saveNewFazenda() }}
                     />
                 </View>
             </View>
@@ -255,6 +269,7 @@ function mapStateToProps(state) {
         enderecoWeb: state.fazendaReducers.enderecoWeb,
         telefone: state.fazendaReducers.telefone,
         cliente: state.fazendaReducers.cliente,
+        isUpdate: state.fazendaReducers.isUpdate,
         
         nomeIsValid: state.fazendaReducers.nomeIsValid,
         emailIsValid: state.fazendaReducers.emailIsValid,
@@ -268,6 +283,10 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         clear,
         modifyField,
+        saveFazenda,
+        updateFazenda,
+        setFazenda,
+        setUpdate,
     }, dispatch);
 }
 

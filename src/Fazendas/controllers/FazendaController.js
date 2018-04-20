@@ -35,7 +35,7 @@ export function save(newFazenda) {
 
 export function update(fazenda) {
     realmDB.write(() => {
-        realm.create(SCHEMA_NAME, fazenda, true);
+        realmDB.create(SCHEMA_NAME, fazenda, true);
     });
 }
 

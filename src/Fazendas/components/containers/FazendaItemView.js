@@ -11,8 +11,11 @@ class FazendaItemView extends Component {
         const { navigate } = this.props.navigation;
         const fazenda = this.props.fazenda;
 
+        console.log('ON ITEM VIEW');
+        console.log(fazenda);
+        
         return (
-            <TouchableHighlight style={styles.boxItemView} onPress={() => false}>
+            <TouchableHighlight style={styles.boxItemView} onPress={() => navigate('Fazenda', {fazenda: fazenda})}>
                 <View>
                     <Text style={styles.regular}>{fazenda.nome}</Text>
                     <Text style={styles.regular}>Hectares: {fazenda.hectares}</Text>

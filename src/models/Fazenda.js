@@ -10,6 +10,8 @@ class Fazenda {
         this.bairro = bairro;
         this.dataDesativacao = new Date();
         this.status = '';
-        this.clienteId = clienteId;
+        this.cliId = clienteId;
     }
 }
+
+module.exports = Fazenda;

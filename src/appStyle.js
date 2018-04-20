@@ -80,7 +80,8 @@ export default StyleSheet.create({
 
     // Form
     boxForm: {
-        padding: 20
+        padding: 20,
+        backgroundColor: '#fff'
     },
 
     main: {

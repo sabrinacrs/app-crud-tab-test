@@ -2,6 +2,7 @@ import { findAll } from '../../controllers/FazendaController';
 import { validateEmail } from '../../../../utils/validate';
 
 const INITIAL_STATE = {
+    allFazendas: findAll(),
     fazendas: findAll(),
     fazenda: {},
     nome: '',
@@ -13,6 +14,8 @@ const INITIAL_STATE = {
     enderecoWeb: '',
     telefone: '',
     cliente: {},
+    textSearch: '',
+    isUpdate: false,
 
     nomeIsValid: true,
     hectaresIsValid: true,
@@ -27,12 +30,28 @@ export default function fazendaReducers(state = INITIAL_STATE, action) {
             state = INITIAL_STATE;
             return state;
 
+        case 'SEARCH':
+            return { 
+                ...state, 
+                textSearch: action.payload.text, 
+                fazendas: action.payload.newData 
+            };
+
+        case 'SET_UPDATE':
+            return { ...state, isUpdate: action.payload };
+        
+        case 'SET_ALL_FAZENDAS':
+            return { ...state, allFazendas: action.payload };
+
         case 'SET_FAZENDAS':
             return { ...state, fazendas: action.payload };
 
         case 'SET_FAZENDA':
             return { ...state, fazenda: action.payload };
 
+        case 'MODIFY_TEXT_SEARCH':
+            return { ...state, textSearch: action.payload };
+        
         case 'MODIFY_FIELD':
             switch (action.payload.field) {
                 case 'nome':

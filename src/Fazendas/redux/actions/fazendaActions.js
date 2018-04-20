@@ -1,8 +1,22 @@
-import { save, findAll, deleteAll } from '../../controllers/FazendaController';
+import { save, update, findAll, deleteAll } from '../../controllers/FazendaController';
+
+export function setUpdate(isUpdate) {
+    return {
+        type: 'SET_UPDATE',
+        payload: isUpdate
+    }
+}
 
 export function getAllFazendas() {
     return {
         type: 'SET_FAZENDAS',
+        payload: findAll()
+    }
+}
+
+export function setAllFazendas() {
+    return {
+        type: 'SET_ALL_FAZENDAS',
         payload: findAll()
     }
 }
@@ -27,7 +41,8 @@ export function saveFazenda(newFazenda) {
 }
 
 export function updateFazenda(fazenda) {
-    // update action
+    update(fazenda);
+    return { type: 'TESTE_UPDATE' }
 }
 
 export function dropTableClientes() {
@@ -48,4 +63,30 @@ export function modifyField(field, value) {
             value
         }
     }
+}
+
+export function modifyTextSearch(text) {
+    return {
+        type: 'MODIFY_TEXT_SEARCH',
+        payload: text
+    }
+}
+
+export function filterSearch (allFazendas, text) {
+    const newData = allFazendas.filter((item) => {
+        const itemData = item.nome.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+    });
+
+    return {
+        type: 'SEARCH',
+        payload: {
+            text,
+            newData
+        }
+    }
+
+    // this.props.setFazendas(newData);
+    // this.props.modifyTextSearch(text);
 }

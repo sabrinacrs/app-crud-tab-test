@@ -11,7 +11,7 @@ import FazendaFormView from './containers/FazendaFormView';
 import { clear, modifyNome, modifyField } from '../redux/actions/fazendaActions';
 import { validateEmail } from '../../../utils/validate';
 
-class FazendaForm extends Component {
+class Fazenda extends Component {
     constructor(props) {
         super(props);
 
@@ -39,10 +39,15 @@ class FazendaForm extends Component {
 
     render () {
         const fazenda = this.props.navigation.state.params.fazenda;
+        console.log('ON FAZENDA');
+        console.log(fazenda);
 
         return (
             <ScrollView>
-                <FazendaFormView fazenda={fazenda} />
+                <FazendaFormView 
+                    fazenda={fazenda} 
+                    navigation={this.props.navigation}
+                />
             </ScrollView>
         );
     }
@@ -77,4 +82,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FazendaForm);
+export default connect(mapStateToProps, mapDispatchToProps)(Fazenda);

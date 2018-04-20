@@ -1,13 +1,13 @@
 import { StackNavigator } from 'react-navigation';
 
 import TabNavigator from './TabNavigator';
-import FazendaForm from '../../Fazendas/components/FazendaForm';
+import Fazenda from '../../Fazendas/components/Fazenda';
 import FazendasList from '../../Fazendas/components/FazendasList';
 
 export const FazendaStack = StackNavigator(
     {
-        FazendaForm: {
-            screen: FazendaForm,
+        Fazenda: {
+            screen: Fazenda,
         },
     },
     {
@@ -24,7 +24,7 @@ export const FazendasListStack = StackNavigator({
 
 const Routes = StackNavigator(
     {
-        FazendaForm: { screen: FazendaForm },
+        Fazenda: { screen: Fazenda },
         FazendaStack: { screen: FazendaStack },
         FazendasList: { screen: FazendasList },
         TabNavigator: { screen: TabNavigator },

@@ -6,38 +6,30 @@ import { bindActionCreators } from 'redux';
 import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
-import { getAllFazendas, clear, setFazendas } from '../redux/actions/fazendaActions';
+import { 
+    clear, 
+    getAllFazendas, 
+    setFazendas,
+    setAllFazendas,
+    modifyTextSearch, 
+    filterSearch, 
+} from '../redux/actions/fazendaActions';
 import FazendaItemView from './containers/FazendaItemView';
 
 class FazendasList extends Component {
     constructor(props) {
         super(props);
 
-        // set fazendas a props fazendas recebe o action getAll fazendas
-        // this.getFazendas();
-        this.props.getAllFazendas();
-
-        this.state = { text: '' };
-    }
-
-    getFazendas() {
-        this.props.getAllFazendas(); // se a props funcionar no constructor, dá pra ignorar esse método
+        this.props.setAllFazendas();
     }
 
     filterSearch (text) {
-        const newData = fazendas.filter((item) => {
-            const itemData = item.nome.toUpperCase();
-            const textData = text.toUpperCase();
-            return itemData.indexOf(textData) > -1;
-        });
-
-        this.props.setFazendas(newData);
+        this.props.filterSearch(this.props.allFazendas, text);
     }
 
     refreshList () {
         // initial state
         this.props.clear();
-        this.setState({text: ''});
     }
 
     render() {
@@ -47,7 +39,7 @@ class FazendasList extends Component {
             <View style={styles.container}>
                 <SearchBar
                     lightTheme
-                    value={this.state.text} 
+                    value={this.props.textSearch} 
                     onChangeText={(text) => this.filterSearch(text)}
                     onClear={() => this.refreshList()}
                     placeholder='Nome da fazenda...'
@@ -149,13 +141,18 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         fazendas: state.fazendaReducers.fazendas,
+        allFazendas: state.fazendaReducers.allFazendas,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getAllFazendas,
+        setAllFazendas,
         setFazendas,
+        modifyTextSearch,
+        filterSearch,
+        clear
     }, dispatch);
 }
 
