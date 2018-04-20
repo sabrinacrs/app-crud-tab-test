@@ -34,7 +34,17 @@ export function findAll() {
 }
 
 export function findById(id) {
-    
+    let query = "id = " + id;
+    let result = realmDB.objects(SCHEMA_NAME).filtered(query);
+    let array = Array.from(result);
+    let cliente = array[0];
+
+    // teste
+    console.log('GET BY ID');
+    console.log(cliente);
+
+    // retornando um RealmObject ou null, quando não houver nada
+    return (result.length === 0) ? null : cliente;
 }
 
 export function findMaxId() {

@@ -63,9 +63,9 @@ class FazendasList extends Component {
                 </ScrollView>
 
                 <View>
-                    <TouchableHighlight style={styles.btnAdd} onPress={() => navigate('Fazenda', {}, {
+                    <TouchableHighlight style={styles.btnAdd} onPress={() => navigate('FazendaStack', {}, {
                         type: 'Navigate',
-                        routeName: 'Fazenda',
+                        routeName: 'FazendaStack',
                         params: {fazenda: {}}
                     })}>
                         <Text style={styles.textBtnAdd}>+</Text>

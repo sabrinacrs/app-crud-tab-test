@@ -5,22 +5,110 @@ import { bindActionCreators } from 'redux';
 import { TextInputMask } from 'react-native-masked-text';
 import { Hoshi } from 'react-native-textinput-effects';
 
+import styles from '../../../appStyle';
+import Fazenda from '../../../models/Fazenda';
 import { modifyField, clear } from '../../redux/actions/fazendaActions';
 
-class FormView extends Component {
+class FazendaFormView extends Component {
     constructor(props) {
         super(props);
+
+        // incializa isUpdate com false - se for true, será alterado em this.setFazenda
+        this.state = { isUpdate: false };
+
+        // carrega campos para update
+        this.setFazenda();
+    }
+
+    formValidate() {
+        let flag = true;
+
+        // valida nome
+        if(this.props.nome.length < 3) {
+            this.props.modifyField('nome', this.props.nome);
+        }
+
+        // valida hectares
+
+        // valida email
+        if(this.props.email != "" && !validateEmail(this.props.email)) {
+            this.props.modifyField('email', this.props.email);
+        }
+
+        // valida cidade
+        if(this.props.cidade != "" && this.props.cidade.length < 3) {
+            this.props.modifyField('cidade', this.props.cidade);
+        }
+
+        // valida uf
+        if(this.props.uf != "" && this.props.uf.length < 2) {
+            this.props.modifyField('uf', this.props.uf);
+        }
+
+        // valida telefone
+        if(this.props.telefone != "" && this.props.telefone.length < 14) {
+            this.props.modifyField('telefone', this.props.telefone);
+        }
+    }
+
+    setFazenda() {
+        if(this.props.fazenda.nome != undefined) {
+            const { nome, hectares, telefone, email, enderecoWeb, bairro, cidade, uf} = this.props.fazenda;    
+
+            // set Fields
+            this.props.modifyField('nome', nome);
+            this.props.modifyField('hectares', hectares);
+            this.props.modifyField('telefone', telefone);
+            this.props.modifyField('email', email);
+            this.props.modifyField('enderecoWeb', enderecoWeb);
+            this.props.modifyField('bairro', bairro);
+            this.props.modifyField('cidade', cidade);
+            this.props.modifyField('uf', uf);
+
+            this.setState({isUpdate: true});
+        }
     }
 
     setField(field, value) {
         this.props.modifyField(field, value);
     }
 
+    updateFazenda() {
+        // pega todos os campos e cria nova fazenda com o id da que ja tem na props
+        const { nome, hectares, telefone, email, enderecoWeb, bairro, cidade, uf} = this.props;
+        const clienteId = 1; // o cliente não muda
+        const hectaresFloat = (hectares == "") ? 0 : parseFloat(hectares);
+        const fazenda = new Fazenda(nome, hectaresFloat, telefone, email, enderecoWeb, cidade, uf, bairro, clienteId );
+
+        if(this.formValidate()) {
+            this.props.updateFazenda(fazenda);
+        }
+        alert('UDPDATE');
+    }
+
+    saveNewFazenda() {
+        const { nome, hectares, telefone, email, enderecoWeb, bairro, cidade, uf} = this.props;
+        const clienteId = 1; // pega id do cliente da sessão, que vem por props ou sei lá
+        // parse hectares
+        const hectaresFloat = (hectares == "") ? 0 : parseFloat(hectares.replace("R$", ""));
+
+        // nova fazenda
+        const newFazenda = new Fazenda(nome, hectaresFloat, telefone, email, enderecoWeb, cidade, uf, bairro, clienteId);
+
+        if(formValidate()) {
+            this.props.saveFazenda(newFazenda);
+
+            // clear fields 
+            this.props.clear();
+        }
+        alert('NEW FAZENDA');
+    }
+
     render() {
         return (
             <View>
-                <ScrollView style={styles.main}> 
-                    <View style={styles.content}>
+                <ScrollView> 
+                    <View style={styles.boxForm}>
                         <View style={styles.groupInput}>
                             <Hoshi
                                 value={this.props.nome}
@@ -32,7 +120,7 @@ class FormView extends Component {
                             />
                             {
                                 (this.props.nomeIsValid) ? null: 
-                                <Text style={estilos.labelDanger}>* Campo obrigatório</Text>
+                                <Text style={styles.labelDanger}>* Campo obrigatório</Text>
                             }
                         </View>
                         
@@ -55,22 +143,6 @@ class FormView extends Component {
                             />
                         </View>
 
-                         <View style={styles.groupInput}>
-                            <Hoshi 
-                                value={this.props.email}
-                                onChangeText={(text) => this.setField('email', text)}
-                                label={'E-mail'}
-                                // borderColor={(this.props.emailIsValid) ? '#00798c' : '#db1c1c'}
-                                labelStyle={{ fontFamily: 'Roboto-Regular' }}
-                                inputStyle={styles.textInputs}
-                                keyboardType='email-address'
-                            />
-                            {
-                                (this.props.emailIsValid) ? null: 
-                                <Text style={estilos.labelDanger}>* E-mail inválido</Text>
-                            }
-                        </View>
-                        
                         <View style={styles.groupInput}>
                             <TextInputMask 
                                 value={this.props.telefone}
@@ -91,8 +163,35 @@ class FormView extends Component {
                             />
                             {
                                 (this.props.telefoneIsValid) ? null: 
-                                <Text style={estilos.labelDanger}>* Telefone inválido</Text>
+                                <Text style={styles.labelDanger}>* Telefone inválido</Text>
                             }
+                        </View>
+
+                         <View style={styles.groupInput}>
+                            <Hoshi 
+                                value={this.props.email}
+                                onChangeText={(text) => this.setField('email', text)}
+                                label={'E-mail'}
+                                // borderColor={(this.props.emailIsValid) ? '#00798c' : '#db1c1c'}
+                                labelStyle={{ fontFamily: 'Roboto-Regular' }}
+                                inputStyle={styles.textInputs}
+                                keyboardType='email-address'
+                            />
+                            {
+                                (this.props.emailIsValid) ? null: 
+                                <Text style={styles.labelDanger}>* E-mail inválido</Text>
+                            }
+                        </View>
+
+                        <View style={styles.groupInput}>
+                            <Hoshi
+                                value={this.props.enderecoWeb}
+                                onChangeText={(text) => this.setField('enderecoWeb', text)}
+                                label={'Endereço Web'}
+                                borderColor={'#00798c'}
+                                labelStyle={{ fontFamily: 'Roboto-Regular' }}
+                                inputStyle={styles.textInputs}
+                            />
                         </View>
                         
                         <View style={styles.groupInput}>
@@ -134,10 +233,9 @@ class FormView extends Component {
                 </ScrollView>
                 <View style={styles.footer}>
                     <Button 
-                        title={(isUpdate) ? 'Atualizar' : 'Cadastrar'}
+                        title={(this.state.isUpdate) ? 'Atualizar' : 'Cadastrar'}
                         color="#219653" 
-                        onPress={() => false}
-                        // onPress={() => { (isUpdate) ? this.updateCliente() : this.saveNewCliente() }}
+                        onPress={() => { (this.state.isUpdate) ? this.updateFazenda() : this.saveNewFazenda() }}
                     />
                 </View>
             </View>
@@ -167,10 +265,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
+    return bindActionCreators({
         clear,
-        modifyField
-    }
+        modifyField,
+    }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormView);
+export default connect(mapStateToProps, mapDispatchToProps)(FazendaFormView);

@@ -4,6 +4,8 @@ import { TabNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 import Home from '../../Home/home';
+import FazendasList from '../../Fazendas/components/FazendasList';
+
 
 export default TabNavigator(
     {
@@ -12,7 +14,14 @@ export default TabNavigator(
             navigationOptions: {
                 tabBarLabel: 'Home',
             }
-        }
+        },
+
+        // FazendasList: {
+        //     screen: FazendasList,
+        //     navigationOptions: {
+        //         tabBarLabel: 'Fazendas',
+        //     }
+        // }
     },
     {
         tabBarPosition: 'bottom',
@@ -27,5 +36,5 @@ export default TabNavigator(
                 backgroundColor: '#fff',
             },
         },
-    }
+    },
 );

@@ -4,55 +4,46 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TextInputMask } from 'react-native-masked-text';
 import { Hoshi } from 'react-native-textinput-effects';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from '../../appStyle';
-import FormView from './containers/FormView';
-import { clear, modifyField } from '../redux/actions/fazendaActions';
+import FazendaFormView from './containers/FazendaFormView';
+import { clear, modifyNome, modifyField } from '../redux/actions/fazendaActions';
 import { validateEmail } from '../../../utils/validate';
 
-class Fazenda extends Component {
+class FazendaForm extends Component {
     constructor(props) {
         super(props);
 
         // tem que ver de onde vai pegar o cliente logado, dono da fazenda
     }
 
-    formValidate() {
-        let flag = true;
+    static navigationOptions = (props) => {
+        // const { clear } = props;
+        // console.log('ON NAVIGATION OPTIONS');
+        // console.log(props);
+        // console.log(this.clear);
 
-        // valida nome
-        if(this.props.nome.length < 3) {
-            this.props.modifyField('nome', this.props.nome);
-        }
-
-        // valida hectares
-
-        // valida email
-        if(this.props.email != "" && !validateEmail(this.props.email)) {
-            this.props.modifyField('email', this.props.email);
-        }
-
-        // valida cidade
-        if(this.props.cidade != "" && this.props.cidade.length < 3) {
-            this.props.modifyField('cidade', this.props.cidade);
-        }
-
-        // valida uf
-        if(this.props.uf != "" && this.props.uf.length < 2) {
-            this.props.modifyField('uf', this.props.uf);
-        }
-
-        // valida telefone
-        if(this.props.telefone != "" && this.props.telefone.length < 14) {
-            this.props.modifyField('telefone', this.props.telefone);
-        }
-    }
+        return {
+            title: '',
+            headerRight: (
+                <TouchableHighlight
+                    style={{ paddingRight: 20 }}
+                    onPress={() => false}
+                >
+                    <Icon name="trash" size={30} color="#4F5B66" />
+                </TouchableHighlight>
+            ),
+        };
+    };
 
     render () {
+        const fazenda = this.props.navigation.state.params.fazenda;
+
         return (
-            <View>
-                <FormView />
-            </View>
+            <ScrollView>
+                <FazendaFormView fazenda={fazenda} />
+            </ScrollView>
         );
     }
 }
@@ -86,4 +77,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Fazenda);
+export default connect(mapStateToProps, mapDispatchToProps)(FazendaForm);

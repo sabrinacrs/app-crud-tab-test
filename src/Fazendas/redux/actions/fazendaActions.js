@@ -14,6 +14,13 @@ export function setFazendas(fazendas) {
     }
 }
 
+export function setFazenda(fazenda) {
+    return {
+        type: 'SET_FAZENDA',
+        payload: fazenda
+    }
+}
+
 export function saveFazenda(newFazenda) {
     save(newFazenda);
     return { type: 'TESTE_CREATE' }

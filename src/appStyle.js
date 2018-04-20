@@ -54,6 +54,15 @@ export default StyleSheet.create({
         
     },
 
+    groupInput: {
+        marginBottom: 25
+    },
+
+    groupInputRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+
     // Lists
 
     // CheckBox
@@ -67,5 +76,29 @@ export default StyleSheet.create({
         alignItems: 'center',
         borderWidth: 0.5,
         borderColor: '#828282'
-    }
+    },
+
+    // Form
+    boxForm: {
+        padding: 20
+    },
+
+    main: {
+        height: '100%',
+        backgroundColor: '#f9f9f9',
+    },
+
+    header: {
+        margin: 20
+    },
+
+    content: {
+        // margin: 20,
+        padding: 20,
+        justifyContent: 'center'
+    },
+
+    footer: {
+        margin: 20
+    },
 });

@@ -9,6 +9,16 @@ export function findAll() {
     return array;
 }
 
+export function findById(id) {
+    let query = "id = " + id;
+    let result = realmDB.objects(SCHEMA_NAME).filtered(query);
+    let array = Array.from(result);
+    let fazenda = array[0];
+
+    // retornando um RealmObject ou null, quando não houver nada
+    return (result.length === 0) ? null : fazenda;
+}
+
 export function findMaxId() {
     let lastId = realmDB.objects(SCHEMA_NAME).max('id');
     let nextId = (lastId == null) ? 1 : lastId + 1;
